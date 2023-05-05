@@ -1,0 +1,47 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const authRoutes = require('../src/routes/authRoutes.js')
+const profile = require('../src/routes/profile.js')
+const adminDashboard = require('./routes/adminDashboard.js')
+const adminManageCompanies = require('./routes/adminManageCompanies.js')
+const cors = require('cors')
+
+
+
+const app = express();
+const cookieParser = require('cookie-parser');
+
+
+
+app.use(cors({ origin: true, credentials: true }));
+
+// Load environment variables from .env file
+require('dotenv').config();
+
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(error => console.error(error));
+
+
+// middleware
+app.use(express.json({ limit: '50mb' }));
+app.use(cookieParser());
+
+// routes
+app.use('/api/auth', authRoutes);
+app.use('/api/protected', profile)
+app.use('/api/dashboard/admin', adminDashboard)
+app.use('/api/dashboard/admin/manageCompanies', adminManageCompanies)
+
+
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});
