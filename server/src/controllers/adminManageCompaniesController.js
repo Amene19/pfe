@@ -8,36 +8,90 @@ const manageCompanies = (req, res)=>{
 }
 
 // Create a new enterprise
+
 const createCompany = async (req, res) => {
-    
   try {
-    const { name, address, totalEmployees, natureOfBusiness, natureOfRisk, image, creationDate, outsideBuilding, entryAndReception, floors } = req.body;
-    const newFloors = await Promise.all(floors.map(async (floor) => {
-      const uploadedPlan = await cloudinary.uploader.upload(floor.plan, {
-        folder: "Floor Plans",
-      });
+    const { name, address, totalEmployees, natureOfBusiness, natureOfRisk, image, creationDate, outsideBuilding, entryAndReception, floors, nonConformities, lastSixMonth, lastSixMonthName } = req.body;
+
+    console.log('Received data:', req.body);
+    console.log('NonConformities:', nonConformities);
+
+    // Retry logic variables
+    const MAX_RETRIES = 6;
+    let retryCount = 0;
+
+    // Upload function with retry
+    async function uploadWithRetry(url, options) {
+      try {
+        return await cloudinary.uploader.upload(url, options);
+      } catch (error) {
+        if (retryCount < MAX_RETRIES) {
+          retryCount++;
+          await new Promise((resolve) => setTimeout(resolve, 4000));
+          return uploadWithRetry(url, options);
+        } else {
+          throw error;
+        }
+      }
+    }
+
+    // Upload the company logo image to Cloudinary
+    const uploadedLogo = await uploadWithRetry(image, {
+      folder: "Company Logo"
+    });
+
+    // Upload attachments for nonConformities
+    const updatedNonConformities = await Promise.all(nonConformities.map(async (nonConformity) => {
+      const updatedAttachment = await Promise.all(nonConformity.attachment.map(async (attachment) => {
+        const uploadedImage = await uploadWithRetry(attachment.url, {
+          folder: "NonConformity Attachments"
+        });
+
+        return {
+          public_id: uploadedImage.public_id,
+          url: uploadedImage.secure_url
+        };
+      }));
 
       return {
-        name: floor.name,
-        items: [...floor.value],
-        plan: {
-          public_id: uploadedPlan.public_id,
-          url: uploadedPlan.secure_url,
-        },
-        parts: floor.parts.map((part) => ({
-          name: part.name,
-          items: [...part.value],
-          fireExtinguishers: part.inputFields.map((field) => ({
-            name: field.name,
-            type: field.type,
-          })),
-        })),
+        num: nonConformity.num,
+        location: nonConformity.location,
+        nonConformity: nonConformity.nonConformity,
+        inspectOrComment: nonConformity.inspectOrComment,
+        attachment: updatedAttachment,
+        recommendation: nonConformity.recommendation,
+        month1: nonConformity.month1,
+        month2: nonConformity.month2,
+        criticity: nonConformity.criticity,
+        priority: nonConformity.priority
       };
     }));
-    // Create a new company document using the request body
-    const result = await cloudinary.uploader.upload(image, {
-      folder: "Compony Logo"
-    })
+
+    // Upload floor plans and fire extinguisher images
+    const newFloors = await Promise.all(floors.map(async (floor) => {
+      const uploadedPlan = await uploadWithRetry(floor.plan, {
+        folder: "Floor Plans",
+      });
+  
+        return {
+          name: floor.name,
+          items: [...floor.value],
+          plan: {
+            public_id: uploadedPlan.public_id,
+            url: uploadedPlan.secure_url,
+          },
+          parts: floor.parts.map((part) => ({
+            name: part.name,
+            items: [...part.value],
+            fireExtinguishers: part.inputFields.map((field) => ({
+              name: field.name,
+              type: field.type,
+            })),
+          })),
+        };
+      }));
+
+    // Create a new company document using the updated schema and uploaded images
     const company = new Company({
       name,
       address,
@@ -45,20 +99,27 @@ const createCompany = async (req, res) => {
       natureOfBusiness,
       natureOfRisk,
       creationDate,
-      image:{
-        public_id: result.public_id,
-        url: result.secure_url
+      image: {
+        public_id: uploadedLogo.public_id,
+        url: uploadedLogo.secure_url
       },
       outsideBuilding,
       entryAndReception,
-      floors: newFloors
+      floors: newFloors,
+      nonConformities: updatedNonConformities,
+      lastSixMonth,
+      lastSixMonthName
     });
-      await company.save();
-      res.status(201).json(company);
-    } catch (err) {
-      res.status(400).json({ message: err.message });
-    }
-  };
+
+    await company.save();
+    res.status(201).json(company);
+  } catch (err) {
+    console.error('Error:', err);
+    res.status(400).json({ message: err.message });
+  }
+};
+
+
   const getAllCompanies = async (req, res) => {
     try {
         const company = await Company.find()

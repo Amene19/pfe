@@ -54,11 +54,7 @@ const AdminSidebar = ({ isExpanded, toggleSidebar }) => {
 			icon: <NotificationsIcon />,
 			to:"/admin/notifications"
 		},
-		{
-			text: "Stats",
-			icon: <QueryStatsIcon />,
-			to:"/admin/stats"
-		},
+		
 	];
 
 	return (

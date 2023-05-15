@@ -1,0 +1,113 @@
+.centered{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.layout{
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-areas: 'content1'
+                       'content2'
+                       'content3'
+                       ;
+                       
+}
+
+.content1{
+  grid-area: content1;
+  background-color: #118ab2
+}
+.content2{
+  grid-area: content2;
+  background-color: #0c101b;
+  padding-top: 0px !important;
+
+
+}
+.content3{
+  grid-area: content3;
+  background-color: #101624;
+}
+
+@media only screen and (min-width: 1220px){
+  .layout{
+      width: 100%;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 1fr 3fr 1fr  ;
+      grid-template-areas: 'content1 content1 content1 content1'
+                           'content2 content3 content3 content3 '
+                           ;
+                           
+  }
+
+  .content2{
+
+    padding-top: 100px !important
+}
+
+}
+
+
+.profileactive {
+  color: white !important
+}
+
+
+.Extinguishers {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.first-division {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 70%;
+}
+
+.second-division {
+  display: flex;
+  align-items: center;
+}
+
+.add-btn,
+.remove-btn {
+  background-color: #3f51b5;
+  color: white;
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+}
+
+.add-btn:hover,
+.remove-btn:hover {
+  background-color: #303f9f;
+}
+
+.CustomTextField {
+  flex-grow: 1;
+  width: 100%;
+  max-width: 200px;
+}
+
+.ToggleButtonGroup-root {
+  display: flex;
+}
+
+.MuiToggleButton-root {
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.toggle-group .Mui-selected {
+  color: #118ab2 !important;
+}
+
+

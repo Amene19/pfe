@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import Swal from 'sweetalert2'
 
 const CustomTextField = styled(TextField)({
   '& fieldset': {
@@ -93,7 +93,11 @@ const AddUsers = () => {
          
           try {
             const response = await axios.post("http://localhost:3000/api/dashboard/admin/addUser", userData,{ withCredentials: true })
-             
+            Swal.fire(
+              'Good job!',
+              'User added!',
+              'success'
+            )
               navigate('/admin/manageUsers')
             
           } catch (error) {

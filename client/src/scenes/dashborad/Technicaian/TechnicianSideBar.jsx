@@ -35,30 +35,17 @@ const TechnicianSidebar = ({ isExpanded, toggleSidebar }) => {
 			to:"/technician/profile"
 		},
 		{
-			text: "Manage Team",
-			icon: <GroupsIcon />,
-			to:"/technician/manageUsers"
-		},
-		{
-			text: "Manage companies",
+			text: "Manage Reports",
 			icon: <HomeRepairServiceIcon />,
-			to:"/technician/manageCompanies"
+			to:"/technician/manageReports"
 		},
-		{
-			text: "Manage missions",
-			icon: <ConfirmationNumberIcon />,
-			to:"/technician/manageMissions"
-		},
+		
 		{
 			text: "notifications",
 			icon: <NotificationsIcon />,
 			to:"/technician/notifications"
 		},
-		{
-			text: "Stats",
-			icon: <QueryStatsIcon />,
-			to:"/technician/stats"
-		},
+	
 	];
 
 	return (

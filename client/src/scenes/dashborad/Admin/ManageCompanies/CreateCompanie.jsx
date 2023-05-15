@@ -11,6 +11,7 @@ import {
   ToggleButtonGroup,
   IconButton,
   Avatar,
+  Table, TableHead, TableRow, TableCell, TableBody
 } from "@mui/material";
 import defaultCompanyImage from "../../../../assets/companyIcon.png";
 import defaultPlanImage from "../../../../assets/plan.png";
@@ -23,9 +24,11 @@ import { useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { v4 as uuidv4 } from "uuid";
+import Swal from 'sweetalert2'
 
 const CreateCompanie = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   //generalInformations form
   const [generalInformations, setGeneralInformations] = useState({
@@ -37,6 +40,95 @@ const CreateCompanie = () => {
     creationDate: "2022-05-01",
     image: "",
   });
+
+  const [lastSixMonth, setLastSixMonth] = useState([0,0,0,0,0,0])
+  const [nonConformity, setNonConformity] = useState([
+    {
+      num: "",
+      location: "",
+      nonConformity: "",
+      inspectOrComment: "",
+      attachment: [],
+      recommendation: "",
+      month1: "",
+      month2: "",
+      criticity: "",
+      priority: ""
+    }
+  ])
+
+  const addRow = (event) => {
+    event.preventDefault();
+    const values = [...nonConformity];
+    values.push({
+      num: "",
+      location: "",
+      nonConformity: "",
+      inspectOrComment: "",
+      attachment: [],
+      recommendation: "",
+      month1: "",
+      month2: "",
+      criticity: "",
+      priority: ""
+    });
+    setNonConformity(values);
+  };
+
+  const removeRow = (index) => {
+    const newRows = nonConformity.filter((row, i) => i !== index);
+    setNonConformity(newRows);
+  };
+
+  const updateRow = (index, key, value) => {
+    if (key === "attachment") {
+      const files = value;
+
+      // Read each file using FileReader
+      const fileReaders = Array.from(files).map((file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+
+          reader.onload = (event) => {
+            resolve({
+              file,
+              dataURL: event.target.result,
+            });
+          };
+
+          reader.onerror = (event) => {
+            reject(event.target.error);
+          };
+
+          reader.readAsDataURL(file);
+        });
+      });
+
+      // Wait for all file readers to finish
+      Promise.all(fileReaders)
+        .then((fileDataArray) => {
+          // Update the attachment array with the file data
+          const updatedAttachments = fileDataArray.map((fileData) => ({
+            url: fileData.dataURL,
+          }));
+
+          const updatedRow = { ...nonConformity[index], [key]: updatedAttachments };
+          const newRows = [...nonConformity];
+          newRows[index] = updatedRow;
+          setNonConformity(newRows);
+        })
+        .catch((error) => {
+          console.error("Error reading files:", error);
+        });
+    } else {
+      const updatedRow = { ...nonConformity[index], [key]: value };
+      const newRows = [...nonConformity];
+      newRows[index] = updatedRow;
+      setNonConformity(newRows);
+    }
+  };
+
+
 
   //Outside Building form
   const [formValues, setFormValues] = useState({
@@ -313,9 +405,9 @@ const CreateCompanie = () => {
         ...floor.value,
         ...(newValue
           ? newValue.filter(
-              (option) =>
-                floor.value.findIndex((v) => v.title === option.title) === -1
-            )
+            (option) =>
+              floor.value.findIndex((v) => v.title === option.title) === -1
+          )
           : []),
       ];
       return newFloors;
@@ -336,7 +428,7 @@ const CreateCompanie = () => {
           updatedFloors[floorIndex] = updatedFloor;
           return updatedFloors;
         });
-        console.log(reader.result);
+
       };
     } else {
       setFloors((prevFloors) => {
@@ -348,6 +440,8 @@ const CreateCompanie = () => {
     }
   };
 
+
+
   const handleParts = (event, newValue, floorIndex, partIndex) => {
     setFloors((prevFloors) => {
       const newFloors = [...prevFloors];
@@ -357,9 +451,9 @@ const CreateCompanie = () => {
         ...part.value,
         ...(newValue
           ? newValue.filter(
-              (option) =>
-                part.value.findIndex((v) => v.title === option.title) === -1
-            )
+            (option) =>
+              part.value.findIndex((v) => v.title === option.title) === -1
+          )
           : []),
       ];
       return newFloors;
@@ -373,7 +467,33 @@ const CreateCompanie = () => {
       return newFloors;
     });
   };
-  console.log(generalInformations);
+
+  const handleChangeLast = (event, index) => {
+    const { value } = event.target;
+    setLastSixMonth((prevState) => {
+      const updatedMonths = [...prevState];
+      updatedMonths[index] = value;
+      return updatedMonths;
+    });
+  };
+
+  const getMonth = (n) => {
+    const currentDate = new Date();
+    const previousMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - n);
+
+    const previousMonthName = previousMonth.toLocaleString('default', { month: 'long' });
+    return previousMonthName
+  }
+  const month6 = getMonth(6)
+  const month5 = getMonth(5)
+  const month4 = getMonth(4)
+  const month3 = getMonth(3)
+  const month2 = getMonth(2)
+  const month1 = getMonth(1)
+
+ const [lastSixMonthName, setLastSixMonthName] = useState([month6, month5, month4, month3, month2, month1 ])
+ console.log(lastSixMonthName)
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const itemsValue = formValues.value;
@@ -402,7 +522,11 @@ const CreateCompanie = () => {
         fireExtinguishers: entryAndReceptionFireExtinguishersValue,
       },
       floors: floors,
+      nonConformities: nonConformity,
+      lastSixMonth: lastSixMonth,
+      lastSixMonthName: lastSixMonthName
     };
+    console.log("formdata",formData)
     const newErrors = {};
     if (!generalInformations.companyName) {
       newErrors.companyName = "Company name is required";
@@ -428,19 +552,29 @@ const CreateCompanie = () => {
       return;
     }
     try {
+      setLoading(true);
       const response = await axios.post(
         "http://localhost:3000/api/dashboard/admin/manageCompanies/create",
         formData,
         { withCredentials: true }
       );
-      console.log(response);
+      Swal.fire(
+        'Good job!',
+        'Company added!',
+        'success'
+      )
       navigate("/admin/manageCompanies");
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false); // Set loading to false after the request completes
     }
   };
 
-  console.log("floors", floors);
+  console.log(floors)
+
+  console.log(nonConformity, "non")
+
 
   return (
     <Box component="form" sx={{ padding: "50px" }}>
@@ -565,6 +699,7 @@ const CreateCompanie = () => {
           onChange={(event) => handleImageChange(event)}
         />
       </Box>
+
       <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
         <h2>Outside Building</h2>
         <Autocomplete
@@ -572,18 +707,18 @@ const CreateCompanie = () => {
           id="fixed-tags-demo"
           value={formValues.value}
           onChange={(event, newValue) => {
-            console.log("newValue:", newValue); // Add this line
+
             setFormValues((prevFormValues) => ({
               ...prevFormValues,
               value: [
                 ...prevFormValues.value,
                 ...(newValue
                   ? newValue.filter(
-                      (option) =>
-                        prevFormValues.value.findIndex(
-                          (v) => v.title === option.title
-                        ) === -1
-                    )
+                    (option) =>
+                      prevFormValues.value.findIndex(
+                        (v) => v.title === option.title
+                      ) === -1
+                  )
                   : []),
               ],
             }));
@@ -670,18 +805,18 @@ const CreateCompanie = () => {
           id="fixed-tags-demo2"
           value={formValuesEntry.value}
           onChange={(event, newValue) => {
-            console.log("newValue:", newValue); // Add this line
+
             setFormValuesEntry((prevFormValues) => ({
               ...prevFormValues,
               value: [
                 ...prevFormValues.value,
                 ...(newValue
                   ? newValue.filter(
-                      (option) =>
-                        prevFormValues.value.findIndex(
-                          (v) => v.title === option.title
-                        ) === -1
-                    )
+                    (option) =>
+                      prevFormValues.value.findIndex(
+                        (v) => v.title === option.title
+                      ) === -1
+                  )
                   : []),
               ],
             }));
@@ -999,6 +1134,7 @@ const CreateCompanie = () => {
                 )}
               </div>
             ))}
+
           </div>
         ))}
         <Button
@@ -1025,6 +1161,222 @@ const CreateCompanie = () => {
           </Button>
         )}
       </Box>
+      <Box sx={{ width: "600px" }}>
+
+
+        <h2>Last month non-conformities Tabel</h2>
+        <Button variant="contained" onClick={addRow}>Add Row</Button>
+        <div style={{ width: "100%", overflowX: "auto" }}>
+
+          <Table>
+            <TableHead>
+              <TableRow>
+
+                <TableCell>ID</TableCell>
+                <TableCell>location</TableCell>
+                <TableCell>NonConformity</TableCell>
+                <TableCell>inspectOrComment</TableCell>
+                <TableCell>attachment</TableCell>
+                <TableCell>recommendation</TableCell>
+                <TableCell>month1</TableCell>
+                <TableCell>month2</TableCell>
+                <TableCell>criticity</TableCell>
+                <TableCell>priority</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {nonConformity.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                    <CustomTextField
+                      type="text"
+                      value={row.num}
+                      onChange={(e) => updateRow(index, "num", e.target.value)}
+                      variant="outlined"
+                      style={{ width: "5ch" }}
+
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      type="text"
+                      value={row.location}
+                      onChange={(e) => updateRow(index, "location", e.target.value)}
+                      variant="outlined"
+                      style={{ width: "20ch" }}
+
+
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      type="text"
+                      value={row.nonConformity}
+                      onChange={(e) => updateRow(index, "nonConformity", e.target.value)}
+                      variant="outlined"
+                      style={{ width: "20ch" }}
+
+
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      type="text"
+                      value={row.inspectOrComment}
+                      onChange={(e) => updateRow(index, "inspectOrComment", e.target.value)}
+                      variant="outlined"
+                      style={{ width: "50ch" }}
+                      multiline
+                      rows={2}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <input
+                      type="file"
+                      multiple
+                      onChange={(e) => updateRow(index, "attachment", e.target.files)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      type="text"
+                      value={row.recommendation}
+                      onChange={(e) => updateRow(index, "recommendation", e.target.value)}
+                      variant="outlined"
+                      style={{ width: "50ch" }}
+
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Select
+                      type="text"
+                      value={row.month1}
+                      onChange={(e) => updateRow(index, "month1", e.target.value)}
+                      variant="outlined"
+
+                    >
+                      <MenuItem value="Ok">OK</MenuItem>
+                      <MenuItem value="NO">NO</MenuItem>
+                      <MenuItem value="*-*">*-*</MenuItem>
+                    </Select>
+                  </TableCell>
+                  <TableCell>
+                    <Select
+                      type="text"
+                      value={row.month2}
+                      onChange={(e) => updateRow(index, "month2", e.target.value)}
+                      variant="outlined"
+
+                    >
+                      <MenuItem value="Ok">OK</MenuItem>
+                      <MenuItem value="NO">NO</MenuItem>
+                      <MenuItem value="*-*">*-*</MenuItem>
+                    </Select>
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      type="text"
+                      value={row.criticity}
+                      onChange={(e) => updateRow(index, "criticity", e.target.value)}
+                      variant="outlined"
+
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Select
+                      value={row.priority}
+                      onChange={(e) => updateRow(index, "priority", e.target.value)}
+                      variant="outlined"
+
+                    >
+                      <MenuItem value="A">A</MenuItem>
+                      <MenuItem value="B">B</MenuItem>
+                      <MenuItem value="C">C</MenuItem>
+                    </Select>
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="contained" onClick={() => removeRow(index)}>Remove</Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+        <Box>
+          <h2>Total Criticality in the Last Six Months</h2>
+          <Box>
+
+            <CustomTextField
+              margin="normal"
+              required
+              name={`month${1}`}
+              label={getMonth(6)}
+              type="number"
+              id={`month${1}`}
+              value={lastSixMonth[0]}
+              onChange={(event) => handleChangeLast(event, 0)}
+            />
+            <CustomTextField
+              margin="normal"
+              required
+
+
+              name={`month${2}`}
+              label={getMonth(5)}
+              type="number"
+              id={`month${2}`}
+              value={lastSixMonth[1]}
+              onChange={(event) => handleChangeLast(event, 1)}
+            />
+            <CustomTextField
+              margin="normal"
+              required
+
+              name={`month${3}`}
+              label={getMonth(4)}
+              type="number"
+              id={`month${3}`}
+              value={lastSixMonth[2]}
+              onChange={(event) => handleChangeLast(event, 2)}
+            />
+            <CustomTextField
+              margin="normal"
+              required
+
+              name={`month${4}`}
+              label={getMonth(3)}
+              type="number"
+              id={`month${4}`}
+              value={lastSixMonth[3]}
+              onChange={(event) => handleChangeLast(event, 3)}
+            />
+            <CustomTextField
+              margin="normal"
+              required
+
+              name={`month${5}`}
+              label={getMonth(2)}
+              type="number"
+              id={`month${5}`}
+              value={lastSixMonth[4]}
+              onChange={(event) => handleChangeLast(event, 4)}
+            />
+            <CustomTextField
+              margin="normal"
+              required
+
+              name={`month${6}`}
+              label={getMonth(1)}
+              type="number"
+              id={`month${6}`}
+              value={lastSixMonth[5]}
+              onChange={(event) => handleChangeLast(event, 5)}
+            />
+          </Box>
+        </Box>
+
+
+      </Box>
       <div
         style={{
           display: "flex",
@@ -1033,7 +1385,7 @@ const CreateCompanie = () => {
         }}
       >
         <CustomButton variant="contained" onClick={handleSubmit}>
-          Create
+         {loading ? "Loading..." : "Create"}
         </CustomButton>
       </div>
     </Box>

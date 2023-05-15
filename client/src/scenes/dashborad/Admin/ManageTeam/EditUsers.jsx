@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 const CustomTextField = styled(TextField)({
   "& fieldset": {
@@ -103,6 +104,11 @@ const EditUser = () => {
           userData,
           { withCredentials: true }
         );
+        Swal.fire(
+          'Good job!',
+          'User updated!',
+          'success'
+        )
 
         navigate("/admin/manageUsers");
       } catch (error) {

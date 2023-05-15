@@ -19,6 +19,7 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { useRef } from "react";
+import ReactApexChart from 'react-apexcharts';
 
 const headCells = [
   { id: "companyName", label: "Company name" },
@@ -33,6 +34,60 @@ const ConsultCompany = () => {
   const [company, setCompany] = useState({});
   const { id } = useParams();
 
+  const [chartData, setChartData] = useState({
+    series: [
+      {
+        name: "Line",
+        data: []
+      }
+    ],
+    options: {
+      chart: {
+        height: 350,
+        type: 'line',
+        zoom: {
+          enabled: false
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'straight'
+      },
+      title: {
+        text: 'Product Trends by Month',
+        align: 'left',
+        style: {
+          color: 'white'
+        }
+      },
+      grid: {
+        row: {
+          colors: ['#f3f3f3', 'transparent'],
+          opacity: 1
+        }
+      },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        labels: {
+          style: {
+            colors: 'white'
+          }
+        }
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: 'white'
+          }
+        }
+      }
+    }
+  });
+  
+
+
   useEffect(() => {
     getCompany();
   }, []);
@@ -45,6 +100,26 @@ const ConsultCompany = () => {
       );
       const data = response.data;
       setCompany(data);
+      const lastSixMonth = data.lastSixMonth; // Assuming the data contains the lastSixMonth array
+      const lastSixMonthName = data.lastSixMonthName
+
+      setChartData(prevState => ({
+        ...prevState,
+        series: [
+          {
+            name: "Line",
+            data: lastSixMonth
+          }
+        ],
+        options: {
+          ...prevState.options,
+          xaxis: {
+            ...prevState.options.xaxis,
+            categories: lastSixMonthName
+          }
+        }
+      }));
+
     } catch (error) {
       console.log(error);
     }
@@ -62,39 +137,39 @@ const ConsultCompany = () => {
     floors,
   } = company;
 
-  console.log(outsideBuilding?.items);
+
+
   const formattedDate = new Date(creationDate).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
 
-  console.log(company)
 
   return (
     <Box
       sx={{
         marginBottom: "100px",
-        marginTop:"50px",
+        marginTop: "50px",
         display: "flex",
         flexDirection: "column",
         gap: "30px",
       }}
     >
       <CustomButton
-          variant="outlined"
-          sx={{ width: "100px" }}
-          startIcon={<ArrowBackIosIcon />}
-          component={Link}
-          to={`/admin/manageCompanies`}
-        >
-          {" "}
-          Back
-        </CustomButton>
+        variant="outlined"
+        sx={{ width: "100px" }}
+        startIcon={<ArrowBackIosIcon />}
+        component={Link}
+        to={`/admin/manageCompanies`}
+      >
+        {" "}
+        Back
+      </CustomButton>
       <Box
         sx={{ display: "flex", justifyContent: "center", paddingTop: "30px" }}
       >
-        
+
         {image && (
           <Avatar
             sx={{ width: 200, height: 200, borderRadius: "0" }}
@@ -319,6 +394,11 @@ const ConsultCompany = () => {
           ))}
         </Box>
       ))}
+      <Box>
+        <div id="chart">
+          <ReactApexChart options={chartData.options} series={chartData.series} type="line" height={350} />
+        </div>
+      </Box>
     </Box>
   );
 };

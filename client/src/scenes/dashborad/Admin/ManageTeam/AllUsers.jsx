@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-
+import Swal from 'sweetalert2'
 import { Link } from 'react-router-dom';
 
 
@@ -49,9 +49,27 @@ const [users, setUsers] = useState([]);
     }
     
     const deleteUser = async (id) => {
-        try {
+
+            try {
+                const result = await Swal.fire({
+                  title: 'Are you sure?',
+                  text: "You won't to delete this user!",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Yes, delete it!'
+                });
+            
+                if (result.isConfirmed) {
             await axios.delete(`http://localhost:3000/api/dashboard/admin/deleteUser/${id}`,{ withCredentials: true });
             getAllUsers()
+            Swal.fire(
+                'Deleted!',
+                'User has been deleted.',
+                'success'
+              );
+            }
         } catch (error) {
             console.log(error); 
         }

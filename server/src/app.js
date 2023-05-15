@@ -4,6 +4,7 @@ const authRoutes = require('../src/routes/authRoutes.js')
 const profile = require('../src/routes/profile.js')
 const adminDashboard = require('./routes/adminDashboard.js')
 const adminManageCompanies = require('./routes/adminManageCompanies.js')
+const technicianManageReports= require('./routes/technicianManageReports.js')
 const cors = require('cors')
 
 
@@ -36,7 +37,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/protected', profile)
 app.use('/api/dashboard/admin', adminDashboard)
 app.use('/api/dashboard/admin/manageCompanies', adminManageCompanies)
-
+app.use('/api/dashboard/technician/manageReports', technicianManageReports)
 
 
 // Start the server

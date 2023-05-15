@@ -1,6 +1,23 @@
 const mongoose = require('mongoose');
 
 
+const nonConformitySchema = new mongoose.Schema({
+  num: String,
+  location: String,
+  nonConformity: String,
+  inspectOrComment: String,
+  attachment: [
+    {
+      public_id: String,
+      url: String
+    }
+  ],
+  recommendation: String,
+  month1: String,
+  month2: String,
+  criticity: String,
+  priority: String
+});
 
 const fireExtinguisherSchema = new mongoose.Schema({
     name: String,
@@ -67,7 +84,10 @@ const companySchema = new mongoose.Schema({
   },
   outsideBuilding: outsideBuildingSchema,
   entryAndReception: entryAndReceptionSchema,
-  floors: [floorSchema]
+  floors: [floorSchema],
+  nonConformities: [nonConformitySchema],
+  lastSixMonth: Array,
+  lastSixMonthName: Array
 });
 
 

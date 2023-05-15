@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
+import Swal from 'sweetalert2'
+
 
 const ConsultCompanies = () => {
   const [companies, setCompanies] = useState([])
@@ -28,15 +30,38 @@ const getAllCompanies = async () => {
     
 }
 
+
+
 const deleteCompany = async (id) => {
   try {
-      await axios.delete(`http://localhost:3000/api/dashboard/admin/manageCompanies/delete/${id}`,{ withCredentials: true });
-      getAllCompanies()
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (result.isConfirmed) {
+      await axios.delete(`http://localhost:3000/api/dashboard/admin/manageCompanies/delete/${id}`, {
+        withCredentials: true
+      });
+
+      getAllCompanies(); // Assuming this is a function to fetch and update the company list
+
+      Swal.fire(
+        'Deleted!',
+        'Campany has been deleted.',
+        'success'
+      );
+    }
   } catch (error) {
-      console.log(error); 
+    console.log(error);
   }
-  
-}
+};
+
 
 
 
