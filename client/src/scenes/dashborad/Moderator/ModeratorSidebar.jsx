@@ -1,12 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./AdminDashboard.css";
+import "./ModeratorDashboard.css";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import GroupsIcon from '@mui/icons-material/Groups';
 import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { Link} from "react-router-dom";
@@ -19,36 +17,31 @@ import cookie from "js-cookie"
 
 
 
-const AdminSidebar = ({ isExpanded, toggleSidebar }) => {
+const ModeratorSidebar = ({ isExpanded, toggleSidebar }) => {
 
 
 
 	const menuItems = [
 		{
 			text: "Dashboard",
-			icon: window.location.pathname === '/admin'? <DashboardIcon style={{color: "#141b2d"}}/>: <DashboardIcon />,
-			to:"/admin"
+			icon: window.location.pathname === '/moderator'? <DashboardIcon style={{color: "#141b2d"}}/>: <DashboardIcon />,
+			to:"/moderator"
 		},
 		{
 			text: "Profile",
 		
-			icon: window.location.pathname.startsWith('/admin/profile')? <AccountBoxIcon style={{color: "#141b2d"}}/>: <AccountBoxIcon />,
-			to:"/admin/profile"
+			icon: window.location.pathname.startsWith('/moderator/profile')? <AccountBoxIcon style={{color: "#141b2d"}}/>: <AccountBoxIcon />,
+			to:"/moderator/profile"
 		},
 		{
-			text: "Manage Team",
-			icon: window.location.pathname.startsWith('/admin/manageUsers')? <GroupsIcon style={{color: "#141b2d"}}/>: <GroupsIcon />,
-			to:"/admin/manageUsers"
+			text: "Manage Reports",
+			icon: window.location.pathname.startsWith('/moderator/manageReports')? <HomeRepairServiceIcon style={{color: "#141b2d"}}/>: <HomeRepairServiceIcon />,
+			to:"/moderator/manageReports"
 		},
 		{
-			text: "Manage companies",
-			icon: window.location.pathname.startsWith('/admin/manageCompanies')? <HomeRepairServiceIcon style={{color: "#141b2d"}}/>: <HomeRepairServiceIcon />,
-			to:"/admin/manageCompanies"
-		},
-		{
-			text: "Manage missions",
-			icon: window.location.pathname.startsWith('/admin/manageMissions')? <ConfirmationNumberIcon style={{color: "#141b2d"}}/>: <ConfirmationNumberIcon />,
-			to:"/admin/manageMissions"
+			text: "Missions",
+			icon: window.location.pathname.startsWith('/moderator/myMissions')? <ConfirmationNumberIcon style={{color: "#141b2d"}}/>: <ConfirmationNumberIcon />,
+			to:"/moderator/myMissions"
 		}
 		
 	];
@@ -88,7 +81,7 @@ const AdminSidebar = ({ isExpanded, toggleSidebar }) => {
             sx={{ width: 60, height: 60 }}
             />
             <h4 className={!isExpanded ? "showOff" : "showOn"}>{localStorage.getItem('name')}</h4>
-            <h4 className={!isExpanded ? "showOff" : "showOn"} style={{ color:"#141b2d", fontWeight:'bold'}}>Admin</h4>
+            <h4 className={!isExpanded ? "showOff" : "showOn"} style={{ color:"#141b2d", fontWeight:'bold'}}>Moderator</h4>
         </Stack>
 				<div className="nav-menu">
 					{menuItems.map(({ text, icon, to }, index) => (
@@ -111,6 +104,6 @@ const AdminSidebar = ({ isExpanded, toggleSidebar }) => {
 	);
 };
 
-export default AdminSidebar;
+export default ModeratorSidebar;
 
 

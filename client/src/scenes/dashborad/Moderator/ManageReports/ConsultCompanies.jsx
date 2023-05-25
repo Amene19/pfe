@@ -19,7 +19,7 @@ const ConsultCompanies = () => {
 
 const getAllCompanies = async () => {
     try {
-        const response = await axios.get(`http://localhost:3000/api/dashboard/technician/manageReports/allCompanies`,{ withCredentials: true });
+        const response = await axios.get(`http://localhost:3000/api/dashboard/mederator/manageReports/allCompanies`,{ withCredentials: true });
         const data = response.data.company
         setCompanies(data);
     } catch (error) {
@@ -64,7 +64,7 @@ console.log(companies)
               variant="outlined"
               startIcon={<ContentPasteSearchIcon />}
               sx={{ width: "110px" }}
-              component={Link} to={`/technician/manageReports/${company._id}`}
+              component={Link} to={`/moderator/manageReports/${company._id}`}
             >
               {" "}
               Details
@@ -75,21 +75,10 @@ console.log(companies)
               color="success"
               startIcon={<EditIcon />}
               sx={{ width: "120px", marginRight:"6px" }}
-              component={Link} to={`/admin/manageCompanies/edit/${company._id}`}
             >
               {" "}
               History
             </Button>
-              <Button
-                variant="outlined"
-                color="success"
-                startIcon={<AddIcon />}
-                sx={{ width: "190px" }}
-                component={Link} to={`/technician/manageReports/create/${company._id}`}
-              >
-                {" "}
-               ADD REPORT
-              </Button>
             </CardActions>
 
           </Card>
@@ -98,12 +87,11 @@ console.log(companies)
   )
 };
 
-export default ConsultCompanies;
-
-
 const CustomButton = styled(Button)({
     background: "#118ab2",
     border: 0,
     color: "white",
     
   });
+
+export default ConsultCompanies;

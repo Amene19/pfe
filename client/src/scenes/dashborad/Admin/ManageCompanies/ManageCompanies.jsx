@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom"
 import ConsultCompanies from "./ConsultCompanies"
 import ManageCompaniesSidebar from "./ManageCompanieSidebar"
-import CreateCompanie from "./createCompanie"
+import CreateCompanie from "./CreateCompanie"
 
 import "./manageCompanies.css"
 import ConsultCompany from "./ConsultCompany"

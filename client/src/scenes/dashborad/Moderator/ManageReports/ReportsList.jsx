@@ -2,8 +2,8 @@ import { Table, TableHead, TableCell, TableRow, TableBody, Button, styled, Avata
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import Swal from 'sweetalert2'
 import { Link } from 'react-router-dom';
 
@@ -35,11 +35,12 @@ const ReportsList = () => {
         getAllReports();
     }, []);
 
+    
 
 
     const getAllReports = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/api/dashboard/technician/manageReports/allReports`, { withCredentials: true });
+            const response = await axios.get(`http://localhost:3000/api/dashboard/mederator/manageReports/allReports`, { withCredentials: true });
             const data = response.data.report
             setReports(data);
         } catch (error) {
@@ -47,34 +48,8 @@ const ReportsList = () => {
         };
 
     }
-    const deleteReport = async (id) => {
-
-        try {
-            const result = await Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't to delete this Report!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            });
-
-            if (result.isConfirmed) {
-                await axios.delete(`http://localhost:3000/api/dashboard/technician/manageReports/delete/${id}`, { withCredentials: true });
-                getAllReports()
-                Swal.fire(
-                    'Deleted!',
-                    'Report has been deleted.',
-                    'success'
-                );
-            }
-        } catch (error) {
-            console.log(error);
-        }
-
-    }
-
+    
+    console.log(reports)
 
     return (
         <Box>
@@ -113,8 +88,8 @@ const ReportsList = () => {
                             </TableCell>
                             <TableCell >
                                 <Box sx={{ display: "flex", gap: "5px" }}>
-                                    <Button variant="contained" startIcon={<EditIcon />} component={Link} style={{ backgroundColor: "#118ab2" }} to={`/technician/manageReports/edit/${report._id}`} >EDIT AND SUBMIT</Button>
-                                    <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={() => deleteReport(report._id)}>Delete</Button>
+                                    <Button variant="contained" startIcon={<RemoveRedEyeIcon />} component={Link} style={{ backgroundColor: "#118ab2" }} to={`/technician/manageReports/edit/${report._id}`} >Review Report</Button>
+                            
                                 </Box>
 
                             </TableCell>

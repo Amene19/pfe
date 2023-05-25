@@ -5,6 +5,10 @@ const profile = require('../src/routes/profile.js')
 const adminDashboard = require('./routes/adminDashboard.js')
 const adminManageCompanies = require('./routes/adminManageCompanies.js')
 const technicianManageReports= require('./routes/technicianManageReports.js')
+const adminMangeMissions = require("./routes/adminManageMissions.js")
+const techMissions = require('./routes/techMissions.js')
+const moderatorMissions = require('./routes/moderatorMissions.js')
+const mederatorManageReports = require('./routes/moderatorManageReports.js')
 const cors = require('cors')
 
 
@@ -38,6 +42,10 @@ app.use('/api/protected', profile)
 app.use('/api/dashboard/admin', adminDashboard)
 app.use('/api/dashboard/admin/manageCompanies', adminManageCompanies)
 app.use('/api/dashboard/technician/manageReports', technicianManageReports)
+app.use('/api/dashboard/admin/manageMissions', adminMangeMissions)
+app.use('/api/dashboard/technician/manageMissions', techMissions)
+app.use('/api/dashboard/moderator/manageMissions', moderatorMissions)
+app.use('/api/dashboard/mederator/manageReports', mederatorManageReports)
 
 
 // Start the server

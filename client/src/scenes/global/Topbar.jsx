@@ -21,7 +21,8 @@ const Topbar = () => {
     const [, , removeCookie] = useCookies(['jwt']);
     const navigate = useNavigate();
     const token = cookie.get("jwt");
-    const handleLogout = async () => {
+    const handleLogout = async (event) => {
+        event.preventDefault();
         try {
           
           removeCookie('jwt');

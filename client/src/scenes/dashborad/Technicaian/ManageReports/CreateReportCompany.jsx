@@ -110,6 +110,7 @@ const CreateReport = () => {
                 [
                     {
                         name: "",
+                        type: "",
                         good: true,
                         bad: false,
                         observation: ""
@@ -730,7 +731,7 @@ const CreateReport = () => {
         // Check if all fields have a truthy value
 
         const formData = {
-            name: company.companyName,
+            companyName: company.name,
             address: company.address,
             totalEmployees: company.totalEmployees,
             natureOfBusiness: company.natureOfBusiness,
@@ -843,7 +844,7 @@ const CreateReport = () => {
 
 
                 <h2>Table of Non-Conformity</h2>
-                <div style={{ width: "100%", overflowX: "auto" }}>
+                <div style={{ width: "120%", overflowX: "auto" }}>
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -1272,7 +1273,7 @@ const CreateReport = () => {
             </Box>
             <Box>
                 <h2>Collect Photos</h2>
-                <div>
+                <div style={{display: "flex", flexDirection: "column", gap:"20px"}}>
                     <video ref={videoRef} autoPlay></video>
                     {isCameraOn ? (
                         <CustomButton onClick={stopCamera}>Stop Camera</CustomButton>
@@ -1288,11 +1289,11 @@ const CreateReport = () => {
                                 {photos.length > 0 && (
                                     <div>
                                         <h3>Photos:</h3>
-                                        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap'}}>
                                             {photos.map((photo, index) => (
-                                                <div key={index} style={{ margin: '5px' }}>
+                                                <div key={index} style={{ margin: '5px', display: 'flex', flexDirection:"column", gap:"20px" }}>
                                                     <img src={photo.url} alt="Captured" />
-                                                    <input
+                                                    <CustomTextField
                                                         type="text"
                                                         value={photo.comment}
                                                         onChange={(e) => handleCommentChange(index, e.target.value)}

@@ -1161,7 +1161,7 @@ const CreateCompanie = () => {
           </Button>
         )}
       </Box>
-      <Box sx={{ width: "600px" }}>
+      <Box sx={{ width: "1000px" }}>
 
 
         <h2>Last month non-conformities Tabel</h2>
@@ -1193,7 +1193,7 @@ const CreateCompanie = () => {
                       value={row.num}
                       onChange={(e) => updateRow(index, "num", e.target.value)}
                       variant="outlined"
-                      style={{ width: "5ch" }}
+                      style={{ width: "7ch" }}
 
                     />
                   </TableCell>
@@ -1304,7 +1304,7 @@ const CreateCompanie = () => {
         </div>
         <Box>
           <h2>Total Criticality in the Last Six Months</h2>
-          <Box>
+          <Box sx={{ display: "flex", gap:"20px"}}>
 
             <CustomTextField
               margin="normal"

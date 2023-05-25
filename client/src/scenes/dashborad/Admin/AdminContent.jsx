@@ -1,10 +1,9 @@
 import { Route, Routes } from "react-router-dom"
 import ManageTeam from "./ManageTeam/ManageTeam"
 import ManageCompanies from "./ManageCompanies/ManageCompanies";
-import ManageMissions from "./ManageMissions";
+import ManageMissions from "./ManageMissions/ManageMissions";
 import AdminProfile from "../../global/ManageProfile/AdminProfile";
 
-import AdminNotifications from "./AdminNotifications";
 
 
 const AdminContent = () => {
@@ -13,9 +12,8 @@ const AdminContent = () => {
       <Routes>
         <Route path="/manageUsers/*" exact element={<ManageTeam />} />
         <Route path="/manageCompanies/*" element={<ManageCompanies />} />
-        <Route path="/manageMissions" element={<ManageMissions />} />
+        <Route path="/manageMissions/*" element={<ManageMissions />} />
         <Route path="/profile/*" element={<AdminProfile />} />
-        <Route path="/notifications" element={<AdminNotifications />} />
       </Routes>
     </div>
   );

@@ -96,9 +96,9 @@ const [users, setUsers] = useState([]);
                         <TableCell>{user.lastname}</TableCell>
                         <TableCell>{user.email}</TableCell>
                         <TableCell>{user.role}</TableCell>
-                        <TableCell sx={{display:"flex", gap:"10px"}}>
+                        <TableCell>
                             <Button variant="contained" color="success" startIcon={<EditIcon />}  component={Link} to={`/admin/manageUsers/EditUser/${user._id}`}>Edit</Button>
-                            <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={() => deleteUser(user._id)}>Delete</Button> 
+                            <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={() => deleteUser(user._id)}>Delete</Button>                
                         </TableCell>
                     </TRow>
                 ))}

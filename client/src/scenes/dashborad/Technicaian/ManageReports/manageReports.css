@@ -5,7 +5,6 @@
 }
 .layout{
   width: 100%;
-  height: 100vh;
   display: grid;
   grid-template-columns: 100%;
   grid-template-areas: 'content1'
@@ -17,10 +16,12 @@
 
 .content1{
   grid-area: content1;
+  height: 100px;
   background-color: #118ab2
 }
 .content2{
   grid-area: content2;
+  height: 100px;
   background-color: #0c101b;
   padding-top: 0px !important;
 
@@ -29,31 +30,21 @@
 .content3{
   grid-area: content3;
   background-color: #101624;
-}
-
-@media only screen and (min-width: 1220px){
-  .layout{
-      width: 100%;
-      height: 100vh;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: 1fr 3fr 1fr  ;
-      grid-template-areas: 'content1 content1 content1 content1'
-                           'content2 content3 content3 content3 '
-                           ;
-                           
-  }
-
-  .content2{
-
-    padding-top: 100px !important
-}
 
 }
 
+
+
+.side{
+  display: flex;
+  align-items: center !important;
+  justify-content: space-around;
+}
 
 .profileactive {
-  color: white !important
+  color: white !important;
+  
+  
 }
 
 
@@ -109,5 +100,4 @@
 .toggle-group .Mui-selected {
   color: #118ab2 !important;
 }
-
 

@@ -4,11 +4,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AddIcon from '@mui/icons-material/Add';
 import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
-import "./manageCompanies.css"
+import "./manageMissions.css"
 
 
 
-const ManageCompaniesSidebar = () => {
+const ManageMissionssSidebar = () => {
     const linkStyle = {
         display: "flex",
         alignItems: "center",
@@ -27,17 +27,17 @@ const ManageCompaniesSidebar = () => {
       return (
         <Box width="100%"  className="side">
           <div>
-              <Link to="/admin/manageCompanies" style={linkStyle}>      
+              <Link to="/admin/manageMissions" style={linkStyle}>      
               <HomeRepairServiceIcon sx={iconStyle} />
-              <h2 style={{ margin: "0", color:"#9b9696"}} className={window.location.pathname === '/admin/manageCompanies' ? 'profileactive' : ''}>Companies List</h2>
-              {window.location.pathname === '/admin/manageCompanies'? <ArrowForwardIosIcon style={{paddingLeft: "10px"}}/>: ""}
+              <h2 style={{ margin: "0", color:"#9b9696"}} className={window.location.pathname === '/admin/manageMissions' ? 'profileactive' : ''}>Missions List</h2>
+              {window.location.pathname === '/admin/manageMissions'? <ArrowForwardIosIcon style={{paddingLeft: "10px"}}/>: ""}
               </Link>
           </div>
           <div>
               <Link to="create" style={linkStyle}>
               <AddIcon sx={iconStyle} />
-              <h3 style={{ margin: "0", color:"#9b9696"}} className={window.location.pathname === '/admin/manageCompanies/create' ? 'profileactive' : ''}>Create New Companie</h3>
-              {window.location.pathname === '/admin/manageCompanies/create'? <ArrowForwardIosIcon style={{paddingLeft: "10px"}}/>: ""}
+              <h3 style={{ margin: "0", color:"#9b9696"}} className={window.location.pathname === '/admin/manageMissions/create' ? 'profileactive' : ''}>Create New Mission</h3>
+              {window.location.pathname === '/admin/manageMissions/create'? <ArrowForwardIosIcon style={{paddingLeft: "10px"}}/>: ""}
               </Link>
           </div>
         </Box>
@@ -45,4 +45,4 @@ const ManageCompaniesSidebar = () => {
 }
 
 
-export default ManageCompaniesSidebar
+export default ManageMissionssSidebar

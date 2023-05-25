@@ -1,14 +1,12 @@
 import { Route, Routes } from "react-router-dom"
 
 
-import ConsultCompanies from "./ConsultCompanies"
-
 import "./manageReports.css"
-import ManageReportsSidebar from "./ManageReportsSidebar"
-import CreateReport from "./CreateReportCompany"
+import ConsultCompanies from "./ConsultCompanies"
 import ConsultCompany from "./ConsultCompany"
 import ReportsList from "./ReportsList"
-import EditReport from "./EditReport"
+import ManageReportsSidebar from "./ManageReportsSidebar"
+
 
 
 
@@ -32,9 +30,8 @@ const ManageReports = () => {
           <Routes>
               <Route path="/" element={<ConsultCompanies />}/>
               <Route path="/:id" element={<ConsultCompany />} />
-              <Route path="/create/:id" element={<CreateReport />} />
+            
               <Route path="/reports" element={<ReportsList />} />
-              <Route path="/edit/:id" element={<EditReport />} />
             </Routes>
           </div>
         </div>

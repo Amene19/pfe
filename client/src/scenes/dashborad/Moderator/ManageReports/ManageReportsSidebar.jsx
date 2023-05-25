@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import "./manageReports.css"
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import AddIcon from '@mui/icons-material/Add';
+
 import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 
 
@@ -26,17 +26,17 @@ const ManageReportsSidebar = () => {
   return (
     <Box width="100%" className="side" >
       <div>
-        <Link to="/technician/manageReports" style={linkStyle}>
+        <Link to="/moderator/manageReports" style={linkStyle}>
           <HomeRepairServiceIcon sx={iconStyle} />
-          <h2 style={{ margin: "0", color: "#9b9696" }} className={window.location.pathname === '/technician/manageReports' ? 'profileactive' : ''}>Companies List</h2>
-          {window.location.pathname === '/technician/manageReports' ? <ArrowForwardIosIcon style={{ paddingLeft: "10px" }} /> : ""}
+          <h2 style={{ margin: "0", color: "#9b9696" }} className={window.location.pathname === '/moderator/manageReports' ? 'profileactive' : ''}>Companies List</h2>
+          {window.location.pathname === '/moderator/manageReports' ? <ArrowForwardIosIcon style={{ paddingLeft: "10px" }} /> : ""}
         </Link>
       </div>
       <div>
-        <Link to="/technician/manageReports/reports" style={linkStyle}>
+        <Link to="/moderator/manageReports/reports" style={linkStyle}>
           <HomeRepairServiceIcon sx={iconStyle} />
-          <h2 style={{ margin: "0", color: "#9b9696" }} className={window.location.pathname === '/technician/manageReports/reports' ? 'profileactive' : ''}>Reports List</h2>
-          {window.location.pathname === '/technician/manageReports/reports' ? <ArrowForwardIosIcon style={{ paddingLeft: "10px" }} /> : ""}
+          <h2 style={{ margin: "0", color: "#9b9696" }} className={window.location.pathname === '/moderator/manageReports/reports' ? 'profileactive' : ''}>Reports List</h2>
+          {window.location.pathname === '/moderator/manageReports/reports' ? <ArrowForwardIosIcon style={{ paddingLeft: "10px" }} /> : ""}
         </Link>
       </div>
      

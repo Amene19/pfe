@@ -30,7 +30,7 @@ const TechnicianSidebar = ({ isExpanded, toggleSidebar }) => {
 			to:"/technician"
 		},
 		{
-			text: "Technician Profile",
+			text: "Profile",
 			icon: <AccountBoxIcon />,
 			to:"/technician/profile"
 		},
@@ -41,9 +41,9 @@ const TechnicianSidebar = ({ isExpanded, toggleSidebar }) => {
 		},
 		
 		{
-			text: "notifications",
-			icon: <NotificationsIcon />,
-			to:"/technician/notifications"
+			text: "Missions",
+			icon: <ConfirmationNumberIcon />,
+			to:"/technician/myMissions"
 		},
 	
 	];

@@ -153,7 +153,7 @@ const Login = () => {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Avatar sx={{ m: 1, bgcolor: '#1976d2' }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -186,10 +186,7 @@ const Login = () => {
                 autoComplete="current-password"
               />
               {formik.errors.password ? <div style={{ color: 'red', fontSize: "12px"  }}>{formik.errors.password}</div>: null}
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
+              
               {formik.errors.submit ? <div style={{ color: 'red' }}>{formik.errors.submit}</div>: null}
               <Button
                 type="submit"

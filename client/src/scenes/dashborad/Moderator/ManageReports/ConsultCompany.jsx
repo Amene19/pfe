@@ -56,7 +56,7 @@ const ConsultCompany = () => {
         curve: 'straight'
       },
       title: {
-        text: 'Total Criticity for last six Month',
+        text: 'Product Trends by Month',
         align: 'left',
         style: {
           color: 'white'
@@ -95,7 +95,7 @@ const ConsultCompany = () => {
   const getCompany = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/dashboard/admin/manageCompanies/getCompany/${id}`,
+        `http://localhost:3000/api/dashboard/moderator/manageReports/getCompany/${id}`,
         { withCredentials: true }
       );
       const data = response.data;
@@ -161,7 +161,7 @@ const ConsultCompany = () => {
         sx={{ width: "100px" }}
         startIcon={<ArrowBackIosIcon />}
         component={Link}
-        to={`/admin/manageCompanies`}
+        to={`/technician/manageReports`}
       >
         {" "}
         Back

@@ -34,7 +34,7 @@ const createReport = async (req, res) => {
     const currentYear = currentDate.getFullYear();
   try {
     const {
-      name,
+      companyName,
       address,
       totalEmployees,
       natureOfBusiness,
@@ -49,7 +49,7 @@ const createReport = async (req, res) => {
     } = req.body;
 
     console.log('Received data:', req.body);
-    console.log(nonConformities[0].attachment, "first");
+    console.log(companyName, "company Name");
      // Upload photos to Cloudinary and get public_id and url
      const uploadedPhotos = await Promise.all(
       photos.map(async (photo) => {
@@ -85,7 +85,7 @@ const createReport = async (req, res) => {
 
     // Create a new report document using the updated schema
     const report = new Report({
-      name,
+      companyName,
       address,
       totalEmployees,
       natureOfBusiness,
@@ -98,6 +98,7 @@ const createReport = async (req, res) => {
       nonConformities,
       photos: uploadedPhotos,
       approved: false,
+      posted: false,
       date: `${currentYear}-${currentMonth}-${currentDay}`,
     });
 
@@ -109,9 +110,120 @@ const createReport = async (req, res) => {
   }
 };
 
+const editReport = async (req, res) => {
+  try {
+    const {
+      outsideBuilding,
+      entryAndReception,
+      floors,
+      nonConformities,
+      InterventionGroup,
+      improvement
+    } = req.body;
+
+    const reportId = req.params.id; // Assuming you pass the report ID in the URL
+
+
+    const newFloors = await Promise.all(floors.map(async (floor) => {
+      return {
+        name: floor.name,
+        items: [...floor.items],
+        parts: floor.parts.map((part) => ({
+          name: part.name,
+          items: [...part.items],
+          fireExtinguishers: part.fireExtinguishers.map((fireExtinguisher) => ({
+            name: fireExtinguisher.name,
+            type: fireExtinguisher.type,
+            good: fireExtinguisher.good,
+            bad: fireExtinguisher.bad,
+            observation: fireExtinguisher.observation
+          })),
+        })),
+      };
+    }));
+
+    // Find the existing report document by ID
+    const report = await Report.findById(reportId);
+
+    if (!report) {
+      return res.status(404).json({ message: 'Report not found' });
+    }
+
+    // Update the report fields
+   
+    report.outsideBuilding = outsideBuilding;
+    report.entryAndReception = entryAndReception;
+    report.floors = newFloors;
+    report.nonConformities = nonConformities;
+    report.InterventionGroup = InterventionGroup;
+    report.improvement = improvement;
+    report.posted = true
+    // Save the updated report
+    await report.save();
+    res.json(report);
+  } catch (err) {
+    console.error('Error:', err);
+    res.status(400).json({ message: err.message });
+  }
+};
+
+const getAllReports = async (req, res) => {
+  try {
+      const report = await Report.find()
+      return res.json({report});
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Server error');
+  }
+  
+}
+
+const getAllReportsPosted = async (req, res) => {
+  try {
+      const report = await Report.find({posted: true})
+      return res.json({report});
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Server error');
+  }
+  
+}
+
+const getReport = async (req, res) => {
+  const id = req.params.id
+  try {
+      const report = await Report.findById(id)
+      return res.json(report)
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Server error');
+  }
+}
+
+const deleteReport = async (req, res) => {
+  const id = req.params.id 
+  try {
+      const report = await Report.deleteOne({ _id: id });
+
+      if (report.deletedCount === 0) {
+        return res.status(404).send('report not found');
+      }
+  
+      res.send('report deleted successfully');
+  } catch(error) {
+      console.error(error);
+      res.status(500).send('Server error');
+  }
+}
+
 
 module.exports = {
     getAllCompanies,
     getCompany,
-    createReport
+    createReport,
+    getAllReports,
+    deleteReport,
+    getReport,
+    editReport,
+    getAllReportsPosted
 }
