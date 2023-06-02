@@ -1,6 +1,8 @@
 
 const Mission = require('../models/mission')
 const User = require('../models/user')
+const Company = require('../models/company')
+const Report = require('../models/report')
 
 
 const addMission = async (req, res) => {
@@ -51,8 +53,22 @@ const deleteMission = async (req, res) => {
     }
   }
 
+  const total = async (req, res) => {
+    try {
+      const reports = await Report.countDocuments();
+      const companies = await Company.countDocuments();
+      const users = await User.countDocuments();
+  
+      return res.json({ reports, companies, users });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Server error');
+    }
+  };
+
 module.exports = {
     addMission,
     getAllMissions,
-    deleteMission
+    deleteMission,
+    total
 }

@@ -1399,10 +1399,25 @@ const items = [
   { title: "Pedestrians Passage" },
   { title: "Signalling and marking" },
   { title: "Guard cabin" },
+  { title: "External staircase"},
   { title: "External equipment (TGBT)" },
   {
     title: "External parking",
   },
+  { title: "Central Alarm" },
+  { title: "DSA state" },
+  { title: "Indications and evacuation plan" },
+  { title: "emergency exit and doors" },
+  { title: "Stage rescuer number" },
+  { title: "Emergency exit status" },
+  { title: "BBG state" },
+  { title: "BA state" },
+  { title: "Electric risk" },
+  { title: "Lighting" },
+  { title: "Heating and air conditioning" },
+  { title: "Pharmacy Boxes" },
+  { title: "rescuer list" },
+  { title: "Red Phone" },
 ];
 
 const CustomTextField = styled(TextField)({

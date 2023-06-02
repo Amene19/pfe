@@ -107,12 +107,14 @@ const reportSchema = new mongoose.Schema({
   }],
   approved: Boolean,
   posted: Boolean,
+  rejected: Boolean,
+  comment: String,
   date: String,
   InterventionGroup: Array,
   improvement: [{
     area: String,
     nonConformity: String,
-    recomendation: String,
+    recommendation: String,
     attachment: [
       {
                 url: String

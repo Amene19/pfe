@@ -36,7 +36,7 @@ const ManageCompaniesSidebar = () => {
           <div>
               <Link to="create" style={linkStyle}>
               <AddIcon sx={iconStyle} />
-              <h3 style={{ margin: "0", color:"#9b9696"}} className={window.location.pathname === '/admin/manageCompanies/create' ? 'profileactive' : ''}>Create New Companie</h3>
+              <h3 style={{ margin: "0", color:"#9b9696"}} className={window.location.pathname === '/admin/manageCompanies/create' ? 'profileactive' : ''}>Create New Company</h3>
               {window.location.pathname === '/admin/manageCompanies/create'? <ArrowForwardIosIcon style={{paddingLeft: "10px"}}/>: ""}
               </Link>
           </div>

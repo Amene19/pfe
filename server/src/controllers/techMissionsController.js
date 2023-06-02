@@ -1,8 +1,9 @@
 
 
-
+const Report = require('../models/report')
 const Mission = require('../models/mission')
 const User = require('../models/user')
+const Company = require('../models/company')
 
 
 
@@ -38,6 +39,19 @@ const missionComplete = async (req, res) => {
     }
 }
 
+const total = async (req, res) => {
+    try {
+      const reports = await Report.countDocuments();
+      const companies = await Company.countDocuments();
+      const users = await User.countDocuments();
+  
+      return res.json({ reports, companies, users });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Server error');
+    }
+  };
 
 
-module.exports = {getUserMissions, missionComplete}
+
+module.exports = {getUserMissions, missionComplete, total}

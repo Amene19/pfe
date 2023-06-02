@@ -31,7 +31,23 @@ body,
   background: #555;
 }
 
+.download-button {
+  background-color: #4CAF50; /* Set the background color */
+  color: white; /* Set the text color */
+  border: none; /* Remove the border */
+  padding: 10px 20px; /* Add padding */
+  text-align: center; /* Center the text */
+  text-decoration: none; /* Remove underlines */
+  display: inline-block; /* Make it an inline element */
+  font-size: 16px; /* Set the font size */
+  transition-duration: 0.4s; /* Add transition effect */
+  cursor: pointer; /* Add a pointer cursor on hover */
+  border-radius: 4px; /* Add rounded corners */
+}
 
+.download-button:hover {
+  background-color: #45a049; /* Change the background color on hover */
+}
 .error {
   color: red !important
 }

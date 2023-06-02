@@ -1289,7 +1289,7 @@ const CreateReport = () => {
                                 {photos.length > 0 && (
                                     <div>
                                         <h3>Photos:</h3>
-                                        <div style={{ display: 'flex', flexWrap: 'wrap'}}>
+                                        <div>
                                             {photos.map((photo, index) => (
                                                 <div key={index} style={{ margin: '5px', display: 'flex', flexDirection:"column", gap:"20px" }}>
                                                     <img src={photo.url} alt="Captured" />

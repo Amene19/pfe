@@ -158,6 +158,7 @@ const editReport = async (req, res) => {
     report.InterventionGroup = InterventionGroup;
     report.improvement = improvement;
     report.posted = true
+    report.rejected = false
     // Save the updated report
     await report.save();
     res.json(report);

@@ -635,7 +635,7 @@ const EditReport = () => {
     setIsOpenI((prev) => ({ ...prev, [activeIndex]: false }));
     setActiveIndex(null);
   };
-
+  console.log(improvement, "improvment")
   // Function to handle photo selection
   const handlePhotoSelectionI = (photoId) => {
     setSelectedPhotos((prevSelectedPhotos) => {
@@ -751,6 +751,8 @@ const EditReport = () => {
   return (
     <Box sx={{ marginBottom: "100px", marginTop: "50px", display: "flex", flexDirection: "column", gap: "40px" }}>
       <Box sx={{ width: "1000px" }}>
+        <h2>Moderator observation</h2>
+        <p>{report.comment}</p>
         <h2>Table of non-Conformities</h2>
         <Button variant="contained" onClick={addRow}>Add Row</Button>
         <div style={{ width: "100%", overflowX: "auto" }}>
