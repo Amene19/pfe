@@ -30,6 +30,8 @@ const getAllCompanies = async () => {
     
 }
 
+console.log("hello")
+
 
 
 const deleteCompany = async (id) => {
