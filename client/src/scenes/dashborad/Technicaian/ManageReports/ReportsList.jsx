@@ -7,6 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Swal from 'sweetalert2'
 import { Link } from 'react-router-dom';
 import GeneratePdf from "../../../global/GeneratePdf"
+import GenerateWord from '../../../global/GenerateWord';
 
 
 const StyledTable = styled(Table)`
@@ -124,6 +125,7 @@ const ReportsList = () => {
                                     <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={() => deleteReport(report._id)}>Delete</Button>
 
                                     {report.posted && <GeneratePdf data={report} />}
+                                    {report.posted && <GenerateWord data={report} />}
                                 </Box>
 
                             </TableCell>

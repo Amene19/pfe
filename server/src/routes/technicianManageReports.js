@@ -2,7 +2,7 @@ const express = require('express');
 
 const authRole = require('../Middleware/authRole');
 const authUser = require('../Middleware/authUser.js');
-const {getAllCompanies, getCompany, createReport, getAllReports, deleteReport, getReport, editReport } = require('../controllers/technicianManageReports.js');
+const {getAllCompanies, getCompany, createReport, getAllReports, deleteReport, getReport, editReport} = require('../controllers/technicianManageReports.js');
 
 
 const router = express.Router();
@@ -13,6 +13,7 @@ router.get('/allReports', authUser, authRole('technician'), getAllReports)
 router.delete('/delete/:id', authUser, authRole('technician'), deleteReport)
 router.get('/getReport/:id', authUser, authRole('technician'), getReport)
 router.put('/editReport/:id', authUser, authRole('technician'), editReport)
+
 
 
 

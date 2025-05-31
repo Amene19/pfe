@@ -3,6 +3,9 @@
 const cloudinary = require('../utils/cloudinary')
 const Report = require('../models/report')
 const Company = require('../models/company')
+const bodyParser = require('body-parser');
+const fs = require('fs');
+const mammoth = require('mammoth');
 
 
 const getAllCompanies = async (req, res) => {
@@ -218,6 +221,7 @@ const deleteReport = async (req, res) => {
 }
 
 
+
 module.exports = {
     getAllCompanies,
     getCompany,
@@ -226,5 +230,6 @@ module.exports = {
     deleteReport,
     getReport,
     editReport,
-    getAllReportsPosted
+    getAllReportsPosted,
+   
 }
